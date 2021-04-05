@@ -11,6 +11,12 @@
 
 [fastjson](https://github.com/alibaba/fastjson)
 
+[h2 database](https://www.h2database.com/html/main.html)
+
+[mybatiss](https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
+
+[spring datasource](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-configure-datasource)
+
 
 ## 工具
 
