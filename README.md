@@ -13,6 +13,8 @@
 
 [h2 database](https://www.h2database.com/html/main.html)
 
+我这里在创建h2db的时候，必须要指定绝对路径
+
 [mybatiss](https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
 
 [spring datasource](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-configure-datasource)
