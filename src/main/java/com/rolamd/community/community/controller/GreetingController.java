@@ -25,10 +25,12 @@ public class GreetingController {
 
     @RequestMapping({"/","/index"})
     public String index(HttpServletRequest request){
+        System.out.println(request.getSession().getAttribute("user"));
         if(request.getCookies()!=null) {
             for (Cookie cookie : request.getCookies()) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
+                    System.out.println("token: "+token);
                     User user = userMapper.getUserByToken(token);
                     if (user != null) {
                         request.getSession().setAttribute("user", user);
@@ -37,6 +39,7 @@ public class GreetingController {
                 }
             }
         }
+        System.out.println(request.getSession().getAttribute("user"));
         System.out.println("hello");
         return "index";
     }

@@ -7,6 +7,7 @@ import com.rolamd.community.community.model.User;
 import com.rolamd.community.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,11 +76,33 @@ public class AuthorizeController {
             addUser(user);
 //            userMapper.insert(user);
 //            request.getSession().setAttribute("user",githubUserDTO);
-            return "redirect:index";
+            return "redirect:"+request.getHeader("referer");
         }else{
             // 登录失败
-            return "redirect:index";
+            return "redirect:"+request.getHeader("referer");
         }
+    }
+
+    @GetMapping("/logout")
+    public String doLogout(HttpServletRequest request,
+                           HttpServletResponse response){
+        
+
+        System.out.println(request.getHeader("referer"));
+
+        System.out.println("do logout");
+        request.getSession().setAttribute("user",null);
+        if(request.getCookies()!=null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("token")) {
+                    System.out.println("reset token");
+                    cookie.setValue("");
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+        return "redirect:"+request.getHeader("referer");
     }
 
     private void addUser(User user){
