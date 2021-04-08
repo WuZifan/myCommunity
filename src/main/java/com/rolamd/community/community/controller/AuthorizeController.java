@@ -36,8 +36,6 @@ public class AuthorizeController {
 
     @Autowired
     private UserMapper userMapper;
-
-
     
     @GetMapping("/callback")
     public String loginByGit(@RequestParam(name = "code") String code,
@@ -68,8 +66,10 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githubUserDTO.getName());
             user.setAccountId(String.valueOf(githubUserDTO.getId()));
+            user.setBio(githubUserDTO.getBio());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUserDTO.getAvatar_url());
 
             response.addCookie(new Cookie("token",token));
             // 登录成功

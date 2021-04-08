@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.*;
 public interface UserMapper {
 
     @Insert("insert into user " +
-            "(account_id,name,token,gmt_create,gmt_modified) " +
+            "(account_id,name,token,gmt_create,gmt_modified,bio,avatar_url) " +
             "values " +
-            "(#{accountId}, #{name}, #{token}, #{gmtCreate}, #{gmtModified})")
+            "(#{accountId}, #{name}, #{token}, #{gmtCreate}, #{gmtModified},#{bio},#{avatarUrl})")
     void insert(User user);
 
 
@@ -20,8 +20,18 @@ public interface UserMapper {
     @Select("SELECT * FROM user where account_id=#{accountId}")
     User getUserByAcccountId(@Param("accountId") String accountId);
 
+//    @Results({
+//            @Result(property = "id",column = "id",id = true),
+//            @Result(property = "gmtCreate",column = "gmt_create"),
+//            @Result(property = "gmtModified",column = "gmt_modified"),
+//            @Result(property = "avatarUrl",column = "avatar_url")
+//    })
+    @Select("SELECT * FROM user where id=#{id}")
+    User selectById(@Param("id") int id);
+
     @Update("UPDATE user " +
-            "set token=#{token},gmt_modified=#{gmtModified}" +
+            "set name=#{name},token=#{token},gmt_modified=#{gmtModified}," +
+            "bio=#{bio},avatar_url=#{avatarUrl} " +
             "where account_id=#{accountId}")
     int updateUserTokenByAccountId(User user);
 }
