@@ -14,10 +14,10 @@ public interface UserMapper {
     void insert(User user);
 
 
-    @Select("SELECT * from user where token=#{token}")
+    @Select("SELECT * from user where token=#{token} LIMIT 1")
     User getUserByToken(@Param("token") String token);
 
-    @Select("SELECT * FROM user where account_id=#{accountId}")
+    @Select("SELECT * FROM user where account_id=#{accountId} LIMIT 1")
     User getUserByAcccountId(@Param("accountId") String accountId);
 
 //    @Results({

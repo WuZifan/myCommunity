@@ -32,11 +32,11 @@ public class GreetingController {
         return "greeting";
     }
 
-    @RequestMapping({"/","/index"})
+    @RequestMapping({"/","/index","/index2"})
     public String index(HttpServletRequest request,
                         Model model,
-                        @RequestParam(name = "page",defaultValue = "1")String page,
-                        @RequestParam(name = "size",defaultValue = "5")String size){
+                        @RequestParam(name = "page",defaultValue = "1")Integer page,
+                        @RequestParam(name = "size",defaultValue = "5")Integer size){
         System.out.println(request.getSession().getAttribute("user"));
         if(request.getCookies()!=null) {
             for (Cookie cookie : request.getCookies()) {
@@ -54,12 +54,13 @@ public class GreetingController {
 
 //        List<QuestionDTO> questions = questionService.selectAll();
 
-        PaginationDTO paginationDTO = questionService.selectPage(Integer.valueOf(page),Integer.valueOf(size));
+        PaginationDTO paginationDTO = questionService.selectPage(page,size);
 
         model.addAttribute("PaginationDTO",paginationDTO);
-//        for(QuestionDTO questionDTO:questions){
-//            System.out.println(questionDTO.getTitle()+" "+questionDTO.getDescription()+" "+questionDTO.toString());
+//        for(QuestionDTO questionDTO:paginationDTO.getQuestionDTOList()){
+//            System.out.println(questionDTO.getUser());
 //        }
+
         return "index";
     }
 }

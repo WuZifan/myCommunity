@@ -42,6 +42,8 @@ public class AuthorizeController {
                              @RequestParam(name = "state") String state,
                              HttpServletRequest request,
                              HttpServletResponse response){
+        System.out.println("First login: "+request.getHeader("referer"));
+
 
         // step1: in the html
         // step2: get access token
@@ -76,7 +78,11 @@ public class AuthorizeController {
             addUser(user);
 //            userMapper.insert(user);
 //            request.getSession().setAttribute("user",githubUserDTO);
+            System.out.println("login: "+request.getHeader("referer"));
+            System.out.println("scheme"+request.getScheme());
+            System.out.println("servletPath"+request.getContextPath());
             return "redirect:"+request.getHeader("referer");
+//            return "publish";
         }else{
             // 登录失败
             return "redirect:"+request.getHeader("referer");

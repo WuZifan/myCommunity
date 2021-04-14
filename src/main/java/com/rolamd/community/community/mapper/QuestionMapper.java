@@ -27,5 +27,13 @@ public interface QuestionMapper {
 
 
     @Select("SELECT COUNT(1) FROM question")
-    public int countQuestion();
+    public Integer countQuestion();
+
+    @Select("SELECT COUNT(1) FROM question where creator=#{id}")
+    Integer countQuestionByUserId(Integer id);
+
+    @Select("SELECT * FROM question where creator=#{id} Limit #{size} OFFSET #{offset}")
+    List<Question> selectPageByUserId(@Param("id") Integer id,
+                              @Param("offset")Integer offset,
+                              @Param("size")Integer size);
 }
