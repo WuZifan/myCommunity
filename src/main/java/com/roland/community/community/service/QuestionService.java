@@ -6,13 +6,16 @@ import com.roland.community.community.dto.QuestionDTO;
 import com.roland.community.community.mapper.QuestionMapper;
 import com.roland.community.community.mapper.UserMapper;
 import com.roland.community.community.model.Question;
+import com.roland.community.community.model.QuestionExample;
 import com.roland.community.community.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class QuestionService {
@@ -26,7 +29,7 @@ public class QuestionService {
     public PaginationDTO selectPage(Integer page, Integer size){
 
         // 总页数
-        Integer totalCnt = questionMapper.countQuestion();
+        Integer totalCnt =(int)questionMapper.countByExample(new QuestionExample());
 
         if(page> totalCnt/size){
             page =totalCnt/size;
@@ -40,14 +43,17 @@ public class QuestionService {
 
 
         // 拿到当前页问题
-        List<Question> questions = questionMapper.selectPage(offset,size);
+        Map<String,Integer> map = new HashMap<>();
+        map.put("offset",offset);
+        map.put("limit",size);
+        List<Question> questions = questionMapper.selectPage(map);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
 
 
         for (Question question: questions
                 ) {
-            User user = userMapper.selectById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
@@ -67,7 +73,10 @@ public class QuestionService {
 
     public PaginationDTO getQuestionByUserId(Integer id, Integer page, Integer size) {
         // 总页数
-        Integer totalCnt = questionMapper.countQuestionByUserId(id);
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(id);
+
+        Integer totalCnt = (int)questionMapper.countByExample(questionExample);
 
         if(page> totalCnt/size){
             page =totalCnt/size;
@@ -81,11 +90,15 @@ public class QuestionService {
 
 
         // 拿到当前页问题
-        List<Question> questions = questionMapper.selectPageByUserId(id,offset,size);
+        Map<String,Integer> map = new HashMap<>();
+        map.put("creator",id);
+        map.put("offset",offset);
+        map.put("limit",size);
+        List<Question> questions = questionMapper.selectPageByUser(map);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
 
-        User user = userMapper.selectById(id);
+        User user = userMapper.selectByPrimaryKey(id);
         for (Question question: questions
                 ) {
             QuestionDTO questionDTO = new QuestionDTO();
@@ -102,8 +115,9 @@ public class QuestionService {
     }
 
     public QuestionDTO getQuestionById(Integer id) {
-        Question question = questionMapper.getQuestionById(id);
-        User user = userMapper.getUserById(question.getCreator());
+
+        Question question = questionMapper.selectByPrimaryKey(id);
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
 
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
@@ -113,11 +127,11 @@ public class QuestionService {
     }
 
     public void createOrUpdate(Question que){
-        Question question = questionMapper.getQuestionById(que.getId());
+        Question question = questionMapper.selectByPrimaryKey(que.getId());
         if(question==null){
-            questionMapper.insertQuestion(que);
+            questionMapper.insert(que);
         }else{
-            questionMapper.updateQuestion(que);
+            questionMapper.updateByPrimaryKeySelective(que);
 
         }
     }

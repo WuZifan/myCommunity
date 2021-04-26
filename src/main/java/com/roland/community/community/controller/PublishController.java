@@ -32,7 +32,7 @@ public class PublishController {
     @GetMapping("/publish/{id}")
     public String editQuestion(@PathVariable(name = "id")Integer id,
                                Model model){
-        Question question =questionMapper.getQuestionById(id);
+        Question question =questionMapper.selectByPrimaryKey(gitid);
 
         model.addAttribute("title",question.getTitle());
         model.addAttribute("description", question.getDescription());

@@ -28,3 +28,10 @@
 
 [flyway](https://flywaydb.org/documentation/getstarted/firststeps/maven)
 
+```bash
+mvn flyway:migrate
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+
+
+```
+
