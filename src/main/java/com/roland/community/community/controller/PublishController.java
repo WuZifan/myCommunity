@@ -32,7 +32,7 @@ public class PublishController {
     @GetMapping("/publish/{id}")
     public String editQuestion(@PathVariable(name = "id")Integer id,
                                Model model){
-        Question question =questionMapper.selectByPrimaryKey(gitid);
+        Question question =questionMapper.selectByPrimaryKey(id);
 
         model.addAttribute("title",question.getTitle());
         model.addAttribute("description", question.getDescription());
@@ -71,6 +71,8 @@ public class PublishController {
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
         question.setId(id);
+
+
 
         questionService.createOrUpdate(question);
 //        questionMapper.insertQuestion(question);

@@ -1,8 +1,10 @@
 package com.roland.community.community.service;
 
 
+import com.roland.community.community.Exception.CustomizeException;
 import com.roland.community.community.dto.PaginationDTO;
 import com.roland.community.community.dto.QuestionDTO;
+import com.roland.community.community.mapper.QuestionExtMapper;
 import com.roland.community.community.mapper.QuestionMapper;
 import com.roland.community.community.mapper.UserMapper;
 import com.roland.community.community.model.Question;
@@ -26,6 +28,9 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
+
     public PaginationDTO selectPage(Integer page, Integer size){
 
         // 总页数
@@ -46,7 +51,7 @@ public class QuestionService {
         Map<String,Integer> map = new HashMap<>();
         map.put("offset",offset);
         map.put("limit",size);
-        List<Question> questions = questionMapper.selectPage(map);
+        List<Question> questions = questionExtMapper.selectPage(map);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
 
@@ -94,7 +99,7 @@ public class QuestionService {
         map.put("creator",id);
         map.put("offset",offset);
         map.put("limit",size);
-        List<Question> questions = questionMapper.selectPageByUser(map);
+        List<Question> questions = questionExtMapper.selectPageByUser(map);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
 
@@ -117,6 +122,10 @@ public class QuestionService {
     public QuestionDTO getQuestionById(Integer id) {
 
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new CustomizeException("查找的问题不存在");
+        }
+
         User user = userMapper.selectByPrimaryKey(question.getCreator());
 
         QuestionDTO questionDTO = new QuestionDTO();
@@ -131,8 +140,14 @@ public class QuestionService {
         if(question==null){
             questionMapper.insert(que);
         }else{
+            que.setGmtCreate(question.getGmtCreate());
             questionMapper.updateByPrimaryKeySelective(que);
 
         }
+    }
+
+    public void increseView(Integer id) {
+        Question question = questionMapper.selectByPrimaryKey(id);
+        questionExtMapper.increseView(question);
     }
 }

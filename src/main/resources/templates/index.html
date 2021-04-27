@@ -32,7 +32,9 @@
                     <span class="title_text">
                         <span th:text="${question.commentCount}"></span>个回复
                         <span th:text="${question.viewCount}"></span>次浏览
-                        <span th:text="${#calendars.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+                        <span th:text="${#calendars.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>创建
+                        <span th:text="${#calendars.format(question.gmtModified,'yyyy-MM-dd HH:mm')}"></span>修改
+
                         <!--<span>1小时前</span>-->
                     </span>
                 </div>

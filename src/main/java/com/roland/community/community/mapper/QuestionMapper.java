@@ -120,8 +120,6 @@ public interface QuestionMapper {
      */
     int updateByPrimaryKey(Question record);
 
-    List<Question> selectPage(Map map);
 
-    List<Question> selectPageByUser(Map map);
 
 }

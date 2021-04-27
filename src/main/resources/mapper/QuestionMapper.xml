@@ -438,19 +438,5 @@
       TAG = #{tag,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectPage" parameterType="map" resultMap="BaseResultMap">
-    SELECT *
-    FROM QUESTION
-    LIMIT #{limit,jdbcType=INTEGER}
-    OFFSET #{offset,jdbcType=INTEGER}
-  </select>
 
-  <select id="selectPageByUser" parameterType="map" resultMap="BaseResultMap">
-    SELECT *
-    FROM QUESTION
-    WHERE CREATOR=#{creator,jdbcType=INTEGER}
-    LIMIT #{limit,jdbcType=INTEGER}
-    OFFSET #{offset,jdbcType=INTEGER}
-
-  </select>
 </mapper>
