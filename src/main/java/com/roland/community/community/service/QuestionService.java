@@ -1,6 +1,7 @@
 package com.roland.community.community.service;
 
 
+import com.roland.community.community.Exception.CustomizeErrorCode;
 import com.roland.community.community.Exception.CustomizeException;
 import com.roland.community.community.dto.PaginationDTO;
 import com.roland.community.community.dto.QuestionDTO;
@@ -76,7 +77,7 @@ public class QuestionService {
 
     }
 
-    public PaginationDTO getQuestionByUserId(Integer id, Integer page, Integer size) {
+    public PaginationDTO getQuestionByUserId(Long id, Integer page, Integer size) {
         // 总页数
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(id);
@@ -95,7 +96,7 @@ public class QuestionService {
 
 
         // 拿到当前页问题
-        Map<String,Integer> map = new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
         map.put("creator",id);
         map.put("offset",offset);
         map.put("limit",size);
@@ -119,11 +120,11 @@ public class QuestionService {
 
     }
 
-    public QuestionDTO getQuestionById(Integer id) {
+    public QuestionDTO getQuestionById(Long id) {
 
         Question question = questionMapper.selectByPrimaryKey(id);
         if(question==null){
-            throw new CustomizeException("查找的问题不存在");
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
 
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -146,7 +147,7 @@ public class QuestionService {
         }
     }
 
-    public void increseView(Integer id) {
+    public void increseView(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         questionExtMapper.increseView(question);
     }

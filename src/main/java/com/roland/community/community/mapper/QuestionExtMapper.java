@@ -11,6 +11,8 @@ public interface QuestionExtMapper {
 
     int increseView(Question record);
 
+    int increseComment(Question record);
+
     List<Question> selectPage(Map map);
 
     List<Question> selectPageByUser(Map map);

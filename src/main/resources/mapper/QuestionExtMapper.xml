@@ -33,6 +33,13 @@
     where ID = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="increseComment" parameterType="com.roland.community.community.model.Question">
+    update QUESTION
+    set
+    COMMENT_COUNT = COMMENT_COUNT+1
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
   <select id="selectPage" parameterType="map" resultMap="BaseResultMap">
     SELECT *
     FROM QUESTION

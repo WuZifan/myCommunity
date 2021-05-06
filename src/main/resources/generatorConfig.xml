@@ -36,5 +36,8 @@
             <!--<property name="useActualColumnNames" value="false"/>-->
         </table>
 
+        <table tableName="comment" domainObjectName="Comment" >
+        </table>
+
     </context>
 </generatorConfiguration>

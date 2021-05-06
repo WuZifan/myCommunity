@@ -2,10 +2,12 @@ package com.roland.community.community.Exception;
 
 public class CustomizeException extends RuntimeException {
 
+    private Integer code;
     private String message;
-    public CustomizeException(String message) {
-        super(message);
-        this.message = message;
+
+    public CustomizeException(ICustomizeErrorCode errorCode) {
+        this.message = errorCode.getMessage();
+        this.code=errorCode.getCode();
     }
 
     @Override
@@ -13,4 +15,7 @@ public class CustomizeException extends RuntimeException {
         return message;
     }
 
+    public Integer getCode() {
+        return code;
+    }
 }
