@@ -2,6 +2,7 @@ package com.roland.community.community.controller;
 
 import com.roland.community.community.dto.PaginationDTO;
 
+import com.roland.community.community.dto.QuestionDTO;
 import com.roland.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

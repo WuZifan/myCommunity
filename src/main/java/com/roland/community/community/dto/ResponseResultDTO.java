@@ -5,9 +5,10 @@ import com.roland.community.community.Exception.CustomizeException;
 import lombok.Data;
 
 @Data
-public class ResponseResultDTO {
+public class ResponseResultDTO<T> {
     private Integer code;
     private String message;
+    private T data;
 
     public static ResponseResultDTO errorOf(Integer code,String message){
 
@@ -33,5 +34,13 @@ public class ResponseResultDTO {
     public static ResponseResultDTO errorOf(CustomizeException ex) {
 
         return errorOf(ex.getCode(),ex.getMessage());
+    }
+
+    public static <T> ResponseResultDTO okOf(T t) {
+        ResponseResultDTO responseResultDTO = new ResponseResultDTO();
+        responseResultDTO.setCode(200);
+        responseResultDTO.setMessage("success");
+        responseResultDTO.setData(t);
+        return responseResultDTO;
     }
 }

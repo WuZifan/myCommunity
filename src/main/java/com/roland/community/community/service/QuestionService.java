@@ -38,7 +38,7 @@ public class QuestionService {
         Integer totalCnt =(int)questionMapper.countByExample(new QuestionExample());
 
         if(page> totalCnt/size){
-            page =totalCnt/size;
+            page =totalCnt/size+1;
         }else if(page<1){
             page=1;
         }
