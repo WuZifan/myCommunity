@@ -6,15 +6,21 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
+
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js"></script>
+    <script src="/js/lib/prettify.min.js"></script>
 </head>
 <body>
 
 <div th:insert="~{navigation::navigation}"></div>
 <div class="container-fluid main profile">
     <div class="row">
+        <!--左侧正文-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <!--正文-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -25,8 +31,28 @@
                     阅读数：<span th:text="${question.viewCount}"></span>
                 </span>
 
+                <!--内容-->
+
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${question.description}"></div>
+                    <div id="question-view" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <!-- Server-side output Markdown text -->
+                        <textarea style="display:none;" th:text="${question.description}"></textarea>
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
+                            var testView = editormd.markdownToHTML("question-view", {});
+                        });
+                    </script>
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <span th:each="tag:${question.tag.split(',')}">
+                        <span class="label label-info" th:text="${tag}"></span>
+                        <span> </span>
+                    </span>
+                </div>
+
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div>
                     <a th:href="@{'/publish/'+${question.id}}" class="community-menu" th:if="${session.user!=null && session.user.id == question.creator}">
@@ -60,7 +86,7 @@
                             <span class="glyphicon glyphicon-comment commentIcon"
                                   th:data-id="${comment.id}" onclick="collapseComment(this)">
                             </span>
-                            <span th:text="${comment.commentCount}"></span>
+                            <span class = "commentIcon" th:text="${comment.commentCount}"></span>
                             <span class="pull-right" th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
                         </div>
 
@@ -98,7 +124,8 @@
             </div>
 
         </div>
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+        <!--右侧信息-->
+t        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h3>发起人</h3>
                 <div class="media" >
@@ -116,7 +143,21 @@
             </div>
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3>站长Git</h3>
+                <a href="https://github.com/WuZifan?tab=repositories" target="_blank">
+                    <img src="/img/github.png" class="media-object avatar">
+                </a>
+            </div>
+
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h3>相关问题</h3>
+                <ul>
+                    <li th:each="related,relatedStat:${relatedQuestions}" th:if="${relatedStat.count}<=6">
+                        <a th:href="@{'/question/'+${related.id}}" th:text="${related.title}"></a>
+                    </li>
+                </ul>
             </div>
 
         </div>

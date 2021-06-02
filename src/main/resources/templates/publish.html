@@ -6,8 +6,13 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
-    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/editormd.min.css">
+    <script src="/js/jquery-3.6.0.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/community.js" type="application/javascript"></script>
+
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+
 </head>
 <body>
 
@@ -23,14 +28,60 @@
                     <label for="title">问题标题</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题.....">
                 </div>
-                <div class="form-group">
+
+                <div class="form-group" id="question-editor">
                     <label for="description">问题补充</label>
-                    <textarea class="form-control" name="description" id="description" th:text="${description}" cols="30" rows="10"></textarea>
+
+                    <textarea style="display:none" class="form-control" name="description" id="description" th:text="${description}" cols="30" rows="10"></textarea>
+
                 </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var editor = editormd("question-editor", {
+                            width  : "100%",
+                            height : 350,
+                            path   : "/js/lib/",
+                            delay  :0,
+                            saveHTMLToTextarea: true
+                        });
+                    });
+                </script>
+
                 <div class="form-group">
-                    <label for="tag">添加标签</label>tag
-                    <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="添加标签,以逗号隔开">
+                    <label for="tag">添加标签</label>
+                    
+                    <div id="allTagArea">
+                        <input type="text" class="form-control" id="tag" name="tag" autocomplete="off"
+                               th:value="${tag}" placeholder="添加标签,以逗号隔开"
+                               onclick="showPotentialTags()" >
+
+                        <div id="potentialTags" style="display: none;">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation"  th:each="tag:${tags}">
+                                    <a th:href="${'#'+tag.categoryName}" aria-controls="home" role="tab" data-toggle="tab" th:text="${tag.categoryName}"></a>
+                                </li>
+                                <!--<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">平台框架</a></li>-->
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane" th:id="${tag.categoryName}" th:each="tag:${tags}">
+                                    <span th:each="tagName:${tag.tags}">
+                                        <span class="label label-info commentIcon" onclick="selectTag(this)" th:text="${tagName}"></span>
+                                    </span>
+                                </div>
+                                <!--<div role="tabpanel" class="tab-pane" id="profile">-->
+                                    <!--<span class="label label-info commentIcon" onclick="selectTag(this)">Spring</span>-->
+                                    <!--<span class="label label-info commentIcon" onclick="selectTag(this)">SpringBoot</span>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!--tag-tab-->
+
+
+
                 <span class="alert alert-danger" th:text="${error}" th:if="${error!=null}"></span>
                 <button type="submit" class="btn btn-success btn-publish">发布</button>
             </form>

@@ -43,6 +43,7 @@
   <select id="selectPage" parameterType="map" resultMap="BaseResultMap">
     SELECT *
     FROM QUESTION
+    ORDER BY GMT_CREATE DESC
     LIMIT #{limit,jdbcType=INTEGER}
     OFFSET #{offset,jdbcType=INTEGER}
   </select>
@@ -51,9 +52,18 @@
     SELECT *
     FROM QUESTION
     WHERE CREATOR=#{creator,jdbcType=INTEGER}
+    ORDER BY GMT_CREATE DESC
     LIMIT #{limit,jdbcType=INTEGER}
     OFFSET #{offset,jdbcType=INTEGER}
 
+  </select>
+
+  <select id="selectRelated" parameterType="com.roland.community.community.model.Question" resultMap="BaseResultMap">
+    SELECT *
+    FROM QUESTION
+    WHERE id!=#{id} AND (
+      TAG REGEXP #{tag}
+    )
   </select>
 
 

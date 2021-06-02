@@ -11,6 +11,7 @@ import com.roland.community.community.mapper.UserMapper;
 import com.roland.community.community.model.Question;
 import com.roland.community.community.model.QuestionExample;
 import com.roland.community.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class QuestionService {
             questionDTOS.add(questionDTO);
         }
 
-        paginationDTO.setQuestionDTOList(questionDTOS);
+        paginationDTO.setPageDTOList(questionDTOS);
         paginationDTO.setPagination(totalCnt,page,size);
 
 //        if (page<1 || page >paginationDTO.getTotalPage()){
@@ -113,7 +114,7 @@ public class QuestionService {
             questionDTOS.add(questionDTO);
         }
 
-        paginationDTO.setQuestionDTOList(questionDTOS);
+        paginationDTO.setPageDTOList(questionDTOS);
         paginationDTO.setPagination(totalCnt,page,size);
 
         return paginationDTO;
@@ -151,4 +152,31 @@ public class QuestionService {
         Question question = questionMapper.selectByPrimaryKey(id);
         questionExtMapper.increseView(question);
     }
+
+    public List<QuestionDTO> selectReleated(QuestionDTO questionDTO) {
+        if(StringUtils.isBlank(questionDTO.getTag())){
+            return new ArrayList<>();
+        }
+
+        String[] split = questionDTO.getTag().split(",");
+        String tags = String.join("|",split);
+//        String tags = questionDTO.getTag().replace(",","|");
+        Question question = new Question();
+        question.setTag(tags);
+        question.setId(questionDTO.getId());
+
+        List<Question> questions = questionExtMapper.selectRelated(question);
+
+
+        List<QuestionDTO> questionDTOS = new ArrayList<>();
+        for(Question question1 : questions){
+            QuestionDTO questionDTO1 = new QuestionDTO();
+            BeanUtils.copyProperties(question1,questionDTO1);
+            questionDTO1.setUser(userMapper.selectByPrimaryKey(question1.getCreator()));
+            questionDTOS.add(questionDTO1);
+        }
+        return questionDTOS;
+
+    }
+
 }

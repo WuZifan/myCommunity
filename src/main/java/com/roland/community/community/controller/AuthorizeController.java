@@ -75,7 +75,7 @@ public class AuthorizeController {
             // 登录成功
             userService.createOrUpdate(user);
 //            userMapper.insert(user);
-//            request.getSession().setAttribute("user",githubUserDTO);
+            request.getSession().setAttribute("user",githubUserDTO);
 
             return "redirect:"+request.getHeader("referer");
 //            return "publish";

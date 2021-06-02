@@ -1,5 +1,6 @@
 
 
+// 展示评论和二级评论
 function collapseComment(e){
     console.log(e)
     var id = e.getAttribute("data-id");
@@ -74,18 +75,21 @@ function collapseComment(e){
 
 }
 
+// post方法拿到评论
 function postComment() {
     var questionId = $("#question_id").val();
     var commentContent = $("#comment_content").val();
     comment2target(questionId,1,commentContent);
 }
 
+// get方法拿到评论
 function  getComment(e) {
     var id = e.getAttribute("data-id");
     var content = $("#input-"+id).val();
     comment2target(id,2,content);
 }
 
+// 被调用的拿到评论方法
 function comment2target(targetId,type,content) {
     if(!content){
         alert("不能回复空");
@@ -123,5 +127,35 @@ function comment2target(targetId,type,content) {
         dataType: "json",
         contentType:"application/json"
     });
+}
+
+function selectTag(e){
+    var text = e.textContent;
+    var tagInput = $("#tag").val();
+    if(tagInput) {
+        var cnt = 0;
+        var allTag = tagInput.split(",")
+        for(tagId in allTag ){
+            if(allTag[tagId]==text){
+                cnt+=1;
+            }
+        }
+        if(cnt==0){
+            $("#tag").val(tagInput + "," + text);
+        }
+
+    }else{
+        $("#tag").val(text);
+    }
+
+}
+
+function showPotentialTags() {
+    $("#potentialTags").show();
+}
+
+function hidePotentialTags() {
+    $("#potentialTags").hide(1);
+
 }
 

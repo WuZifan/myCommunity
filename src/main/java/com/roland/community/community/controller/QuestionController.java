@@ -2,7 +2,7 @@ package com.roland.community.community.controller;
 
 import com.roland.community.community.dto.CommentDTO;
 import com.roland.community.community.dto.QuestionDTO;
-import com.roland.community.community.enums.CommentTypeEnums;
+import com.roland.community.community.enums.CommentTypeEnum;
 import com.roland.community.community.service.CommentService;
 import com.roland.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,13 @@ public class QuestionController {
                            Model model){
 
         QuestionDTO questionDTO = questionService.getQuestionById(id);
+        List<QuestionDTO> relatedQuestions = questionService.selectReleated(questionDTO);
 
-        List<CommentDTO> comments = commentService.listByQuestionId(id, CommentTypeEnums.QUESTION);
+        List<CommentDTO> comments = commentService.listByQuestionId(id, CommentTypeEnum.QUESTION);
         questionService.increseView(id);
         model.addAttribute("question",questionDTO);
         model.addAttribute("comments",comments);
+        model.addAttribute("relatedQuestions",relatedQuestions);
         return "question";
     }
 }

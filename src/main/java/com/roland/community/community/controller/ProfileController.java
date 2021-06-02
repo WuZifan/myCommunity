@@ -1,7 +1,9 @@
 package com.roland.community.community.controller;
 
 import com.roland.community.community.dto.PaginationDTO;
+import com.roland.community.community.model.Notification;
 import com.roland.community.community.model.User;
+import com.roland.community.community.service.NotificationService;
 import com.roland.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,9 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/profile/{action}")
     public String getMyQuestion(
             Model model,
@@ -32,20 +37,25 @@ public class ProfileController {
             return "redirect:/";
         }
 
+
+//        Long unreadCnt = notificationService.getUnreadCnt(user.getId());
+
         if ("questions".equals(action)){
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
+            PaginationDTO paginationDTO = questionService.getQuestionByUserId(user.getId(),page,size);
+            model.addAttribute("PaginationDTO",paginationDTO);
 
 
         }else if("replies".equals(action)){
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","最新回复");
-
-//            model.addAttribute("PaginationDTO",null);
-
+            PaginationDTO paginationReplyDTO = notificationService.listAllNotification(user.getId(),page,size);
+            model.addAttribute("PaginationDTO",paginationReplyDTO);
         }
-        PaginationDTO paginationDTO = questionService.getQuestionByUserId(user.getId(),page,size);
-        model.addAttribute("PaginationDTO",paginationDTO);
+
+//        model.addAttribute("unreadCnt",unreadCnt);
+
         return "profile";
     }
 }

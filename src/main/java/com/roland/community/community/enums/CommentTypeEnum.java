@@ -1,12 +1,12 @@
 package com.roland.community.community.enums;
 
-public enum CommentTypeEnums {
+public enum CommentTypeEnum {
     QUESTION(1),
     COMMENT(2);
 
     private Integer type;
 
-    CommentTypeEnums(Integer type) {
+    CommentTypeEnum(Integer type) {
         this.type = type;
     }
 
@@ -15,7 +15,7 @@ public enum CommentTypeEnums {
     }
 
     public static boolean isExist(Integer type) {
-        for (CommentTypeEnums com:CommentTypeEnums.values()) {
+        for (CommentTypeEnum com: CommentTypeEnum.values()) {
             if(com.getType() == type){
                 return true;
             }

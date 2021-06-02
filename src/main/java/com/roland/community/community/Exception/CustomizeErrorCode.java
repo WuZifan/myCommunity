@@ -8,7 +8,9 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     SYSTEM_ERRPR(2004,"服务器异常"),
     TYPE_NOT_FOUND(2005,"类型不存在" ),
     COMMENT_NOT_FOUND(2006,"操作的评论不存在" ),
-    CONETNT_IS_EMPTY(2007,"输入评论为空");
+    CONETNT_IS_EMPTY(2007,"输入评论为空"),
+    READ_NOTIFICATION_FAILED(2008,"不能读别人信息");
+    ;
 
     @Override
     public String getMessage() {

@@ -1,9 +1,12 @@
 package com.roland.community.community.controller;
 
+import com.roland.community.community.cache.TagCache;
+import com.roland.community.community.dto.TagDTO;
 import com.roland.community.community.mapper.QuestionMapper;
 import com.roland.community.community.model.Question;
 import com.roland.community.community.model.User;
 import com.roland.community.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class PublishController {
@@ -23,9 +27,11 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
 
+
     @GetMapping("/publish")
     public String publish(Model model){
-
+        List<TagDTO> tagDTOS = TagCache.get();
+        model.addAttribute("tags",tagDTOS);
 
         return "publish";
     }
@@ -34,11 +40,14 @@ public class PublishController {
     public String editQuestion(@PathVariable(name = "id")Long id,
                                Model model){
         Question question =questionMapper.selectByPrimaryKey(id);
+        List<TagDTO> tagDTOS = TagCache.get();
 
         model.addAttribute("title",question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());
         model.addAttribute("id",question.getId());
+        model.addAttribute("tags",tagDTOS);
+
 
         return "publish";
     }
@@ -53,9 +62,13 @@ public class PublishController {
             Model model
     ){
         System.out.println("aaa");
+        List<TagDTO> tagDTOS = TagCache.get();
+
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
+        model.addAttribute("tags",tagDTOS);
+
 
 
         User user =(User) request.getSession().getAttribute("user");
@@ -64,6 +77,14 @@ public class PublishController {
             model.addAttribute("error","用户未登陆");
             return "publish";
         }
+
+        String filterTags = TagCache.filterTags(tag);
+        if(StringUtils.isNotBlank(filterTags)){
+            model.addAttribute("error","非法tag："+filterTags);
+            return "publish";
+        }
+
+
         Question question = new Question();
         question.setTitle(title);
         question.setDescription(description);

@@ -17,5 +17,7 @@ public interface QuestionExtMapper {
 
     List<Question> selectPageByUser(Map map);
 
+    List<Question> selectRelated(Question question);
+
 
 }

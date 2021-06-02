@@ -4,7 +4,7 @@ import com.roland.community.community.Exception.CustomizeErrorCode;
 import com.roland.community.community.dto.CommentCreateDTO;
 import com.roland.community.community.dto.CommentDTO;
 import com.roland.community.community.dto.ResponseResultDTO;
-import com.roland.community.community.enums.CommentTypeEnums;
+import com.roland.community.community.enums.CommentTypeEnum;
 import com.roland.community.community.mapper.CommentMapper;
 import com.roland.community.community.model.Comment;
 import com.roland.community.community.model.User;
@@ -57,7 +57,7 @@ public class CommentController {
     @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
     public ResponseResultDTO<List> comments(@PathVariable(name = "id") Long id){
 
-        List<CommentDTO> comments = commentService.listByQuestionId(id, CommentTypeEnums.COMMENT);
+        List<CommentDTO> comments = commentService.listByQuestionId(id, CommentTypeEnum.COMMENT);
 
         return ResponseResultDTO.okOf(comments);
     }
