@@ -32,6 +32,7 @@ https://pandao.github.io/editor.md/
 
 [flyway](https://flywaydb.org/documentation/getstarted/firststeps/maven)
 
+
 ```bash
 mvn flyway:migrate
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
@@ -89,3 +90,9 @@ Model：
     Model是一个接口
 ModelMap是接口的实现。是将model中的数据填充到<b>request域</b>中，返回给客户端
 总结：session数据保存在服务器，model数据放入视图中。session可以在不同页面使用。model只能在Controller返回的页面使用
+
+### 笔记5：图片上传
+
+* 1）采购服务器和对象存储
+* 2）利用对象存储服务保存图片，并在前台显示；
+* 3）markdown显示用pandao这个差将；

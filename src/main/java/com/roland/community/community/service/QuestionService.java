@@ -5,6 +5,7 @@ import com.roland.community.community.Exception.CustomizeErrorCode;
 import com.roland.community.community.Exception.CustomizeException;
 import com.roland.community.community.dto.PaginationDTO;
 import com.roland.community.community.dto.QuestionDTO;
+import com.roland.community.community.dto.QuestionSearchDTO;
 import com.roland.community.community.mapper.QuestionExtMapper;
 import com.roland.community.community.mapper.QuestionMapper;
 import com.roland.community.community.mapper.UserMapper;
@@ -33,10 +34,19 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDTO selectPage(Integer page, Integer size){
+    public PaginationDTO selectPage(String search, Integer page, Integer size){
+
+        if(!StringUtils.isBlank(search)){
+            String[] split = search.split(" ");
+            search = String.join("|",split);
+        }
+
+
 
         // 总页数
-        Integer totalCnt =(int)questionMapper.countByExample(new QuestionExample());
+//        Integer totalCnt =(int)questionMapper.countByExample(new QuestionExample());
+
+        Integer totalCnt = questionExtMapper.countByQuestion(search);
 
         if(page> totalCnt/size){
             page =totalCnt/size+1;
@@ -50,10 +60,16 @@ public class QuestionService {
 
 
         // 拿到当前页问题
-        Map<String,Integer> map = new HashMap<>();
-        map.put("offset",offset);
-        map.put("limit",size);
-        List<Question> questions = questionExtMapper.selectPage(map);
+//        Map<String,Integer> map = new HashMap<>();
+//        map.put("offset",offset);
+//        map.put("limit",size);
+
+        QuestionSearchDTO questionSearchDTO = new QuestionSearchDTO();
+        questionSearchDTO.setOffset(offset);
+        questionSearchDTO.setLimit(size);
+        questionSearchDTO.setSearch(search);
+
+        List<Question> questions = questionExtMapper.selectPageBySearch(questionSearchDTO);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
 

@@ -10,7 +10,6 @@
     <script src="/js/jquery-3.6.0.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
-
     <script src="/js/editormd.min.js" type="application/javascript"></script>
 
 </head>
@@ -42,7 +41,10 @@
                             height : 350,
                             path   : "/js/lib/",
                             delay  :0,
-                            saveHTMLToTextarea: true
+                            saveHTMLToTextarea: true,
+                            imageUpload    : true,
+                            imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                            imageUploadURL : "/file/upload",
                         });
                     });
                 </script>

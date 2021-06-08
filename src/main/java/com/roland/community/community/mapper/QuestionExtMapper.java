@@ -1,5 +1,6 @@
 package com.roland.community.community.mapper;
 
+import com.roland.community.community.dto.QuestionSearchDTO;
 import com.roland.community.community.model.Question;
 import com.roland.community.community.model.QuestionExample;
 import java.util.List;
@@ -19,5 +20,7 @@ public interface QuestionExtMapper {
 
     List<Question> selectRelated(Question question);
 
+    Integer countByQuestion(@Param("search") String search);
 
+    List<Question> selectPageBySearch(QuestionSearchDTO questionSearchDTO);
 }

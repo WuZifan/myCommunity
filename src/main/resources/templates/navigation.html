@@ -19,9 +19,11 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                <form class="navbar-form navbar-left">
+                <form action="/" method="get" class="navbar-form navbar-left">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="搜索话题">
+                        <input id="search" name="search" type="text" class="form-control" th:placeholder="${search}" th:if="${search!=null}">
+                        <input id="search" name="search" type="text" class="form-control" th:placeholder="搜索问题" th:if="${search==null}">
+
                     </div>
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>

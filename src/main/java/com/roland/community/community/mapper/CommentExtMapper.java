@@ -11,7 +11,4 @@ public interface CommentExtMapper {
 
     int increseComment(Comment comment);
 
-
-
-
 }

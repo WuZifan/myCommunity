@@ -20,6 +20,7 @@ public class UserService {
         List<User> users = userMapper.selectByExample(userExample);
 //        User oldUser = userMapper.getUserByAcccountId(user.getAccountId());
         if(users.size() == 0){
+            System.out.println(user);
             userMapper.insert(user);
         }else{
 

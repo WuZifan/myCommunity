@@ -66,6 +66,30 @@
     )
   </select>
 
+  <select id="countByQuestion" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(*)
+    FROM QUESTION
+    <where>
+      <if test="search != null">
+        and TITLE REGEXP #{search}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectPageBySearch" parameterType="com.roland.community.community.dto.QuestionSearchDTO" resultMap="BaseResultMap">
+    SELECT *
+    FROM QUESTION
+    <where>
+      <if test="search != null">
+        and TITLE REGEXP #{search}
+      </if>
+    </where>
+    ORDER BY GMT_CREATE DESC
+    LIMIT #{limit,jdbcType=INTEGER}
+    OFFSET #{offset,jdbcType=INTEGER}
+
+  </select>
+
 
 
 </mapper>

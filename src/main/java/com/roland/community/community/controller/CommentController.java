@@ -48,6 +48,9 @@ public class CommentController {
         comment.setGmtModified(comment.getGmtCreate());
         comment.setCommentator(user.getId());
         comment.setLikeCount(0L);
+
+//        commentMapper.selectByPrimaryKey(commentCreateDTO.getParentId());
+
         commentService.insert(comment);
 
         return ResponseResultDTO.ok();

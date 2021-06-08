@@ -108,12 +108,12 @@
                 <div class="media" >
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object avatar img-rounded " th:src="${question.user.avatarUrl}" alt="...">
+                            <img class="media-object avatar img-rounded " th:src="${session.user.avatarUrl}" alt="...">
                         </a>
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading">
-                            <span th:href="@{'/question/'+${question.id}}" th:text="${question.user.name}"></span>
+                            <span th:text="${session.user.name}"></span>
                         </h4>
                     </div>
                 </div>
